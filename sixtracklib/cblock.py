@@ -43,6 +43,7 @@ class typeid(object):
   BlockID=7
   LinMapID=8
   BB4DID=9
+  BB6DID=10
 
 
 blocklibpath=os.path.join(modulepath, 'block.so')
@@ -207,6 +208,19 @@ class cBlock(object):
     else:
         raise ValueError('Type "%s" not recognized!'%transv_field_data['type'])
 
+  def BB6D(self,q_part, N_part_tot, sigmaz, N_slices, min_sigma_diff, threshold_singular, 
+                phi, alpha, 
+                Sig_11_0, Sig_12_0, Sig_13_0, 
+                Sig_14_0, Sig_22_0, Sig_23_0, 
+                Sig_24_0, Sig_33_0, Sig_34_0, Sig_44_0):
+    import BB6D as BB6D
+    buf = BB6D.BB6D_init(q_part, N_part_tot, sigmaz, N_slices, min_sigma_diff, threshold_singular,
+                         phi, alpha, 
+                         Sig_11_0, Sig_12_0, Sig_13_0, 
+                         Sig_14_0, Sig_22_0, Sig_23_0, 
+                         Sig_24_0, Sig_33_0, Sig_34_0, Sig_44_0).tobuffer()
+    self._add_float_array(buf)
+      
   def Block(self,offsets=None):
     if offsets==None:
        offsets=self.offsets
