@@ -219,6 +219,8 @@ class cBlock(object):
                          Sig_11_0, Sig_12_0, Sig_13_0, 
                          Sig_14_0, Sig_22_0, Sig_23_0, 
                          Sig_24_0, Sig_33_0, Sig_34_0, Sig_44_0).tobuffer()
+    self.offsets.append(self.last)
+    self._add_integer(typeid.BB6DID)
     self._add_float_array(buf)
       
   def Block(self,offsets=None):

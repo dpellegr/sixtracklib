@@ -20,7 +20,7 @@
 typedef enum type_t {IntegerID, DoubleID,
              DriftID, DriftExactID,
              MultipoleID, CavityID, AlignID,
-             BlockID,LinMapID,BB4DID} type_t;
+             BlockID,LinMapID,BB4DID,BB6DID} type_t;
 
 typedef struct {
     unsigned int size;

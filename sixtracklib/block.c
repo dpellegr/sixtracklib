@@ -59,6 +59,7 @@ int track_single(CLGLOBAL value_t *data,
        enum type_t typeid = get_type(data, elemid);
        elem=data+elemid+1; //Data starts after typeid
 //       _DP("Block_track: elemid=%zu typedid=%u\n",elemid,typeid);
+       //printf("Block_track: typedid=%d\n",typeid);
        switch (typeid) {
            case DriftID:
                 Drift_track(p, (CLGLOBAL Drift*) elem);
@@ -80,6 +81,9 @@ int track_single(CLGLOBAL value_t *data,
            break;
            case BB4DID:
                 BB4D_track(p, (CLGLOBAL BB4D_data *) elem);
+           break;
+           case BB6DID:
+               BB6D_track(p, (CLGLOBAL BB6D_data *) elem);
            break;
            case IntegerID: break;
            case DoubleID: break;

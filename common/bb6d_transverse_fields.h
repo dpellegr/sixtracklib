@@ -1,10 +1,10 @@
 #ifndef _BB6D_TRANSVERSE_FIELDS_
 #define _BB6D_TRANSVERSE_FIELDS_
 
-//From sixtraclib
+//From sixtracklib
+#include "constants.h"
 #include "transverse_field_gauss_ellip.h"
 #include "transverse_field_gauss_round.h"
-#include "constants.h"
 
 _CUDA_HOST_DEVICE_
 void get_Ex_Ey_Gx_Gy_gauss(double x, double y, 
@@ -21,9 +21,9 @@ void get_Ex_Ey_Gx_Gy_gauss(double x, double y,
         
         get_transv_field_gauss_round_local(&data, x, y, &Ex, &Ey);
 
-        Gx = 1/(2.*(x*x+y*y))*(y*Ey-x*Ex+1./(2*PI*EPSILON_0*data.sigma*data.sigma)
+        Gx = 1./(2.*(x*x+y*y))*(y*Ey-x*Ex+1./(2*PI*EPSILON_0*data.sigma*data.sigma)
                             *x*x*exp(-(x*x+y*y)/(2.*data.sigma*data.sigma)));
-        Gy = 1./(2*(x*x+y*y))*(x*Ex-y*Ey+1./(2*PI*EPSILON_0*data.sigma*data.sigma)
+        Gy = 1./(2.*(x*x+y*y))*(x*Ex-y*Ey+1./(2*PI*EPSILON_0*data.sigma*data.sigma)
                             *y*y*exp(-(x*x+y*y)/(2.*data.sigma*data.sigma)));
     }
     else{
@@ -40,7 +40,7 @@ void get_Ex_Ey_Gx_Gy_gauss(double x, double y,
         
         Gx =-1./(2*(Sig_11-Sig_33))*(x*Ex+y*Ey+1./(2*PI*EPSILON_0)*\
                     (sigma_y/sigma_x*exp(-x*x/(2*Sig_11)-y*y/(2*Sig_33))-1.));
-        Gy =1./(2*(Sig_11-Sig_33))*(x*Ex+y*Ey+1./(2*PI*EPSILON_0)*\
+        Gy = 1./(2*(Sig_11-Sig_33))*(x*Ex+y*Ey+1./(2*PI*EPSILON_0)*\
                     (sigma_x/sigma_y*exp(-x*x/(2*Sig_11)-y*y/(2*Sig_33))-1.));
     }
                     

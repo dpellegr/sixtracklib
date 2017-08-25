@@ -38,9 +38,7 @@ typedef struct{
 
 _CUDA_HOST_DEVICE_
 void BB6D_track(CLGLOBAL Particle* p, CLGLOBAL BB6D_data *bb6ddata){
-//                double* x, double* px, double* y, double* py, double* sigma, 
-//                double* delta, double q0, double p0, BB6D_data *bb6ddata){
-
+//printf("BB6D_track\n");
     #ifdef DATA_PTR_IS_OFFSET
     CLGLOBAL double* N_part_per_slice  = (CLGLOBAL double*)(((CLGLOBAL uint64_t*) (&(bb6ddata->N_part_per_slice)))  + ((uint64_t) bb6ddata->N_part_per_slice)  + 1);
     CLGLOBAL double* x_slices_star     = (CLGLOBAL double*)(((CLGLOBAL uint64_t*) (&(bb6ddata->x_slices_star)))     + ((uint64_t) bb6ddata->x_slices_star)     + 1);
@@ -58,8 +56,8 @@ void BB6D_track(CLGLOBAL Particle* p, CLGLOBAL BB6D_data *bb6ddata){
     int N_slices = (int)(bb6ddata->N_slices);
     int i_slice;
     
-    /*// Check data transfer
-    printf("x=%e\n",*x);
+/*
+    // Check data transfer
     printf("sphi=%e\n",(bb6ddata->parboost).sphi);
     printf("calpha=%e\n",(bb6ddata->parboost).calpha);
     printf("S33=%e\n",(bb6ddata->Sigmas_0_star).Sig_33_0);
@@ -71,8 +69,8 @@ void BB6D_track(CLGLOBAL Particle* p, CLGLOBAL BB6D_data *bb6ddata){
     printf("y_slices_star[0]=%e\n",y_slices_star[0]); 
     printf("y_slices_star[5]=%e\n",y_slices_star[5]);         
     printf("sigma_slices_star[0]=%e\n",sigma_slices_star[0]); 
-    printf("sigma_slices_star[5]=%e\n",sigma_slices_star[5]); */
-    
+    printf("sigma_slices_star[5]=%e\n",sigma_slices_star[5]);
+*/    
 
     double x_star  = p->x;
     double px_star = p->px;
@@ -85,7 +83,7 @@ void BB6D_track(CLGLOBAL Particle* p, CLGLOBAL BB6D_data *bb6ddata){
     // Boost coordinates of the weak beam
     BB6D_boost(&(bb6ddata->parboost), &x_star, &px_star, &y_star, &py_star, 
                 &sigma_star, &delta_star);
-    
+
     // Synchro beam
     for (i_slice=0; i_slice<N_slices; i_slice++)
     {
@@ -142,7 +140,7 @@ void BB6D_track(CLGLOBAL Particle* p, CLGLOBAL BB6D_data *bb6ddata){
         
         // Compute longitudinal kick
         double Fz_star = 0.5*(Fx_hat_star*dS_x_bar_hat_star  + Fy_hat_star*dS_y_bar_hat_star+
-                       Gx_hat_star*dS_Sig_11_hat_star + Gy_hat_star*dS_Sig_33_hat_star);
+                              Gx_hat_star*dS_Sig_11_hat_star + Gy_hat_star*dS_Sig_33_hat_star);
                        
         // Apply the kicks (Hirata's synchro-beam)
         delta_star = delta_star + Fz_star+0.5*(
@@ -156,8 +154,8 @@ void BB6D_track(CLGLOBAL Particle* p, CLGLOBAL BB6D_data *bb6ddata){
     
     // Inverse boost on the coordinates of the weak beam
     BB6D_inv_boost(&(bb6ddata->parboost), &x_star, &px_star, &y_star, &py_star, 
-                &sigma_star, &delta_star);
-                
+                   &sigma_star, &delta_star);
+printf("dpx=%.15f\n", x_star - p->x);
     p->x  = x_star;
     p->px = px_star;
     p->y  = y_star;
